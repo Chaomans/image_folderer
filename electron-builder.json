@@ -1,0 +1,15 @@
+{
+    "appId": "com.chaomans.image-folderer",
+    "files": ["dist-electron", "dist-react"],
+    "icon": "./folder_violet_open_icon.png",
+    "mac": {
+        "target": "dmg"
+    },
+    "linux": {
+        "target": "AppImage",
+        "category": "Utility"
+    },
+    "win": {
+        "target": ["portable", "msi"]
+    }
+}
