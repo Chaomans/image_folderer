@@ -1,6 +1,6 @@
-import {app, BrowserWindow, ipcMain} from "electron";
+import {app, BrowserWindow} from "electron";
 import path from "path";
-import { isDev, listImagesData, listImagesFromFolder } from "./utils.js";
+import { ipcHandle, isDev, listImagesData, listImagesFromFolder } from "./utils.js";
 import { getPreloadPath } from "./pathResolver.js";
 
 app.on("ready", () => {
@@ -14,10 +14,10 @@ app.on("ready", () => {
     } else {
         mainWindow.loadFile(path.join(app.getAppPath(), "/dist-react/index.html"));
     }
-    ipcMain.handle("listImagesFromFolder", () => {
+    ipcHandle("listImagesFromFolder", () => {
         return listImagesFromFolder('C:\\Code\\image_folderer');
     })
-    ipcMain.handle("listImagesData", () => {
-        return listImagesData('C:\\Code\\image_folderer', ["folder_violet_open_icon.png"]);
+    ipcHandle("listImagesData", () => {
+        return listImagesData("C:\\Users\\chaom\\Pictures\\Anniv Pao", ["_E245421.JPG"]);
     })
 })

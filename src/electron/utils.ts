@@ -1,9 +1,10 @@
 import { existsSync, readdirSync } from "fs";
 import mime from "mime";
 import { join } from "path/posix";
-import { ImageExifData } from "../../types.js";
 import ExifReader from 'exifreader';
 import path from "path";
+import { Key } from "react";
+import { ipcMain } from "electron";
 
 
 export function isDev(): boolean {
@@ -41,12 +42,12 @@ const isImage = (fileType: string): boolean => {
 const getImageDateTimeOriginal = async (imgPath: string): Promise<ImageExifData> => {
     const tags = await ExifReader.load(imgPath);
     const date = new Date();
-    const dto = tags.DateTimeOriginal?.description ?? `${date.getFullYear()}:${date.getMonth()}`;
+    const dto = tags.DateTimeOriginal?.description ?? `${date.getFullYear()}:${date.getMonth() + 1}`;
     return {
         path: imgPath,
         name: path.basename(imgPath),
         year: parseInt(dto.split(":")[0]),
-        month: parseInt(dto.split(":")[1]) + 1,
+        month: parseInt(dto.split(":")[1]),
     }
 } 
 
@@ -57,4 +58,8 @@ export const listImagesData = async (dir: string, imgs: string[]): Promise<Image
         data.push(dto);
     }
     return [...data];
+}
+
+export const ipcHandle = <Key extends keyof EventPayloadMapping>(key: Key, handler: () => EventPayloadMapping[Key]) => {
+    ipcMain.handle(key, ()=> handler());
 }
