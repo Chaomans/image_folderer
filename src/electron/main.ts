@@ -14,10 +14,6 @@ app.on("ready", () => {
     } else {
         mainWindow.loadFile(path.join(app.getAppPath(), "/dist-react/index.html"));
     }
-    ipcHandle("listImagesFromFolder", () => {
-        return listImagesFromFolder('C:\\Code\\image_folderer');
-    })
-    ipcHandle("listImagesData", () => {
-        return listImagesData("C:\\Users\\chaom\\Pictures\\Anniv Pao", ["_E245421.JPG"]);
-    })
+    ipcHandle("listImagesFromFolder", listImagesFromFolder, 'C:\\Code\\image_folderer')
+    ipcHandle("listImagesData", listImagesData, {dir: "C:\\Users\\chaom\\Pictures\\Anniv Pao", imgs: ["_E245421.JPG"]})
 })

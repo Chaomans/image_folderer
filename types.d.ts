@@ -5,10 +5,15 @@ type ImageExifData = {
     month: number,
 }
 
+type ImageList = {
+    dir: string,
+    imgs: string[]
+}
+
 interface Window {
     electron: {
         subscribeDir: (callback: (dir: string) => void) => void,
-        listImagesFromFolder: () => Promise<string[]>,
+        listImagesFromFolder: () => string[],
         listImagesData: () => Promise<ImageExifData[]>
     }
 }
@@ -16,4 +21,9 @@ interface Window {
 type EventPayloadMapping = {
     listImagesFromFolder: string[],
     listImagesData: Promise<ImageExifData[]>
+}
+
+type EventPayloadArgsMapping = {
+    listImagesFromFolder: string,
+    listImagesData: ImageList
 }

@@ -51,7 +51,7 @@ const getImageDateTimeOriginal = async (imgPath: string): Promise<ImageExifData>
     }
 } 
 
-export const listImagesData = async (dir: string, imgs: string[]): Promise<ImageExifData[]> => {
+export const listImagesData = async ({dir, imgs}: ImageList): Promise<ImageExifData[]> => {
     const data: ImageExifData[] = []
     for (let i = 0; i < imgs.length; i++) {
         const dto = await getImageDateTimeOriginal(path.join(dir, imgs[i]))
@@ -60,6 +60,10 @@ export const listImagesData = async (dir: string, imgs: string[]): Promise<Image
     return [...data];
 }
 
-export const ipcHandle = <Key extends keyof EventPayloadMapping>(key: Key, handler: () => EventPayloadMapping[Key]) => {
-    ipcMain.handle(key, ()=> handler());
+export const ipcHandle = <Key extends keyof EventPayloadMapping | keyof EventPayloadArgsMapping>(
+    key: Key, 
+    handler: (arg: EventPayloadArgsMapping[Key]) => EventPayloadMapping[Key],
+    args: EventPayloadArgsMapping[Key],
+) => {
+    ipcMain.handle(key, () => handler(args));
 }
