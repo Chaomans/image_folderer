@@ -17,6 +17,8 @@
     "dist:linux": "npm run transpile:electron && npm run build && npm run electronn-builder --linux --x64"
   },
   "dependencies": {
+    "exifreader": "^4.33.1",
+    "express": "^5.2.1",
     "mime": "^4.1.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
