@@ -1,69 +1,45 @@
-import { existsSync, readdirSync } from "fs";
-import mime from "mime";
-import { join } from "path/posix";
-import ExifReader from 'exifreader';
-import path from "path";
-import { Key } from "react";
-import { ipcMain } from "electron";
+import { ipcMain, WebFrameMain } from "electron";
+import { getUIPath } from "./pathResolver.js";
+import { pathToFileURL } from "url";
 
 
 export function isDev(): boolean {
     return process.env.NODE_ENV === "development";
 }
 
-export const listImagesFromFolder = (dir: string): string[] => {
-    console.log(`dir: ${dir}`);
-    console.log(`exists: ${existsSync(dir)}`);
-    const files = readdirSync(dir);
-    const media = files.filter(file => {
-        const typ = mime.getType(join(...[dir, file])) ?? "./.";
-        if (isImage(typ)) {
-            console.log([typ, file])
-            return true
-        }
-        return false
-    })
-    console.log(media)
-    return media
-}
-
-const isImage = (fileType: string): boolean => {
-    return fileType.split("/")[0] === "image";
-}
-
-// const isVideo = (fileType: string): boolean => {
-//     return fileType.split("/")[0] === "video";
-// }
-
-// const isMedia = (fileType: string): boolean => {
-//     return isImage(fileType) || isVideo(fileType);
-// }
-
-const getImageDateTimeOriginal = async (imgPath: string): Promise<ImageExifData> => {
-    const tags = await ExifReader.load(imgPath);
-    const date = new Date();
-    const dto = tags.DateTimeOriginal?.description ?? `${date.getFullYear()}:${date.getMonth() + 1}`;
-    return {
-        path: imgPath,
-        name: path.basename(imgPath),
-        year: parseInt(dto.split(":")[0]),
-        month: parseInt(dto.split(":")[1]),
-    }
-} 
-
-export const listImagesData = async ({dir, imgs}: ImageList): Promise<ImageExifData[]> => {
-    const data: ImageExifData[] = []
-    for (let i = 0; i < imgs.length; i++) {
-        const dto = await getImageDateTimeOriginal(path.join(dir, imgs[i]))
-        data.push(dto);
-    }
-    return [...data];
-}
-
 export const ipcHandle = <Key extends keyof EventPayloadMapping | keyof EventPayloadArgsMapping>(
     key: Key, 
-    handler: (arg: EventPayloadArgsMapping[Key]) => EventPayloadMapping[Key],
-    args: EventPayloadArgsMapping[Key],
+    handler: (arg: EventPayloadArgsMapping[Key]) => EventPayloadMapping[Key]
 ) => {
-    ipcMain.handle(key, () => handler(args));
+    ipcMain.handle(key, (event, arg) => {
+        if(!event.senderFrame) { throw new Error("No frame.")}
+        validateEventFrame(event.senderFrame);
+        return handler(arg)
+    });
+}
+
+export const validateEventFrame = (frame: WebFrameMain) => {
+    if(isDev() && new URL(frame.url).host === "localhost:5321"){
+        return;
+    }
+
+    if(frame.url !== pathToFileURL(getUIPath()).toString()){
+        throw new Error("Malicious event")
+    }
+}
+const envVars: EnvVariables = {
+    FRENCH: true,
+    FILTER_BY_YEAR: true,
+    FILTER_BY_MONTH: true,
+    MONTH_SHORT: false
+}
+
+export const setEnvVariables = (vars: EnvVariable[]): void => {
+    vars.forEach(v => {
+        envVars[v.name] = v.value;
+    })
+}
+
+export const getEnvVariables = (): EnvVariables => {
+    return {...envVars};
 }
