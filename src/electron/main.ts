@@ -16,7 +16,7 @@ app.on("ready", () => {
     }
     ipcHandle("listImagesFromFolder", listImagesFromFolder);
     ipcHandle("filterFolderImages", filterFolderImages);
-    ipcHandle("selectFolder", (arg) => {
+    ipcHandle("selectFolder", () => {
         return dialog.showOpenDialogSync({
             properties: ['openDirectory']
         })

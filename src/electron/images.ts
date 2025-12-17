@@ -3,7 +3,6 @@ import mime from "mime";
 import path, { join } from "path";
 import ExifReader from 'exifreader';
 import { getEnvVariables } from "./utils.js";
-import { pathToFileURL } from "url";
 
 export const listImagesFromFolder = (dir: string): string[] => {
     console.log(`dir: ${dir}`);

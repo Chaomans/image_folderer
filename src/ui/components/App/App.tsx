@@ -2,18 +2,6 @@ import { useState } from 'react'
 import reactLogo from '../../assets/react.svg'
 import './App.css'
 
-// Source - https://stackoverflow.com/a
-// Posted by rowinbot, modified by community. See post 'Timeline' for change history
-// Retrieved 2025-12-16, License - CC BY-SA 4.0
-
-declare module 'react' {
-  interface InputHTMLAttributes<T> extends HTMLAttributes<T> {
-    // extends React's HTMLAttributes
-    directory?: string;
-    webkitdirectory?: string;
-  }
-}
-
 
 function App() {
   const [count, setCount] = useState(0)

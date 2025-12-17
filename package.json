@@ -12,9 +12,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "transpile:electron": "tsc --project src/electron/tsconfig.json",
-    "dist:mac": "npm run transpile:electron && npm run build && npm run electronn-builder --mac --arm64",
-    "dist:win": "npm run transpile:electron && npm run build && npm run electronn-builder --win --x64",
-    "dist:linux": "npm run transpile:electron && npm run build && npm run electronn-builder --linux --x64"
+    "dist:mac": "npm run transpile:electron && npm run build && electron-builder --mac --arm64",
+    "dist:win": "npm run transpile:electron && npm run build && electron-builder --win --x64",
+    "dist:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64"
   },
   "dependencies": {
     "exifreader": "^4.33.1",
