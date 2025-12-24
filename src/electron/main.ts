@@ -6,8 +6,9 @@ import { filterFolderImages, listImagesFromFolder } from "./images.js";
 app.on("ready", () => {
     const mainWindow = new BrowserWindow({
         webPreferences: {
-            preload: getPreloadPath()
-        }
+            preload: getPreloadPath(),
+        },
+        frame: false,
     });
     if (isDev()) {
         mainWindow.loadURL("http://localhost:5321");

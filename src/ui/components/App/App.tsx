@@ -20,7 +20,14 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className='App'>
+        <header>
+          <p>Image Folderer</p>
+          <div className="buttons">
+            <button id="minimize">—</button>
+            <button id="close">✕</button>
+          </div>
+        </header>
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>

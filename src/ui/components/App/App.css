@@ -40,3 +40,49 @@
 .read-the-docs {
   color: #888;
 }
+
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 46px;
+  margin: 0;
+  text-align: right;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #5a0070;
+  display: flex;
+  justify-content: space-between;
+  -webkit-app-region: drag;
+}
+
+header p {
+  margin-left: 15px;
+  height: 100%;
+  line-height: 100%;
+}
+
+header button {
+  all: unset;
+  border: none;
+  width: 46px;
+  height: 100%;
+  margin: 0 1px;
+  text-align: center;
+  -webkit-app-region: no-drag;
+}
+
+header button:focus, header button:active {
+  outline: none;
+}
+
+button#minimize:hover {
+  background-color: #681c7a;
+  transition: ease-in .1s;
+}
+
+button#close:hover {
+  background-color: #cb3f2c;
+  transition: ease-in .1s;
+}

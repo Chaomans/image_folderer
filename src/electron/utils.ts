@@ -1,6 +1,8 @@
 import { ipcMain, type WebFrameMain} from "electron";
 import { getUIPath } from "./pathResolver.js";
 import { pathToFileURL } from "url";
+import { readFileSync, writeFileSync } from "fs";
+import envVars from "./data/preferences.json" with { type: "json" };
 
 
 export function isDev(): boolean {
@@ -27,12 +29,7 @@ export const validateEventFrame = (frame: WebFrameMain) => {
         throw new Error("Malicious event")
     }
 }
-const envVars: EnvVariables = {
-    FRENCH: true,
-    FILTER_BY_YEAR: true,
-    FILTER_BY_MONTH: true,
-    MONTH_SHORT: false
-}
+
 
 export const setEnvVariables = (vars: EnvVariable[]): void => {
     vars.forEach(v => {
@@ -42,4 +39,8 @@ export const setEnvVariables = (vars: EnvVariable[]): void => {
 
 export const getEnvVariables = (): EnvVariables => {
     return {...envVars};
+}
+
+export const saveEnvVariables = (): void => {
+    writeFileSync("./data/preferences.json", JSON.stringify({...envVars}));
 }
