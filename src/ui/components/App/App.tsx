@@ -1,50 +1,69 @@
-import { useState } from 'react'
-import reactLogo from '../../assets/react.svg'
-import './App.css'
-
+import { useState } from "react";
+import logo from "../../../../folder_violet_open_icon.png";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
   const [dir, setDir] = useState("");
   const [imgs, setImgs] = useState([""]);
   const listImagesFromFolder = async () => {
     const _dir = await window.electron.selectFolder();
-      if(_dir){
-        console.log(_dir[0])
-        setDir(_dir[0])
-        const res = await window.electron.listImagesFromFolder(_dir[0]);
-        setCount(res.length);
-        setImgs(res);
-      }
-  }
+    if (_dir) {
+      console.log(_dir[0]);
+      setDir(_dir[0]);
+      const res = await window.electron.listImagesFromFolder(_dir[0]);
+      setCount(res.length);
+      setImgs(res);
+    }
+  };
 
   return (
     <>
-      <div className='App'>
+      <div className="App">
         <header>
           <p>Image Folderer</p>
           <div className="buttons">
-            <button id="minimize">—</button>
-            <button id="close">✕</button>
+            <button
+              id="minimize"
+              onClick={() => window.electron.sendFrameAction("MINIMIZE")}
+            >
+              —
+            </button>
+            <button
+              id="close"
+              onClick={() => window.electron.sendFrameAction("CLOSE")}
+            >
+              ✕
+            </button>
           </div>
         </header>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={ () => listImagesFromFolder()}>
-          {dir}
-        </button>
-        <p>{count} images detected</p>
-        <button onClick={() => window.electron.filterFolderImages({dir, imgs})}>Filter folder images !</button>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <main>
+        <h1>Image folderer</h1>
+        <div className="content">
+          <div className="left">
+            <img src={logo} className="logo react" alt="app logo" />
+          </div>
+          <div className="right">
+            <div className="card">
+              <button className="dirBtn" onClick={() => listImagesFromFolder()}>
+                {dir ? dir : "Choisir un dossier"}
+              </button>
+              <p>{count} images detectées</p>
+              <button
+                onClick={() =>
+                  window.electron.filterFolderImages({ dir, imgs })
+                }
+                disabled={dir && count ? false : true}
+              >
+                Filter folder images !
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

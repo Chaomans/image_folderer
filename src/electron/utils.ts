@@ -1,7 +1,7 @@
-import { ipcMain, type WebFrameMain} from "electron";
+import { ipcMain, type WebFrameMain } from "electron";
 import { getUIPath } from "./pathResolver.js";
 import { pathToFileURL } from "url";
-import { readFileSync, writeFileSync } from "fs";
+import { writeFileSync } from "fs";
 import envVars from "./data/preferences.json" with { type: "json" };
 
 
@@ -10,22 +10,33 @@ export function isDev(): boolean {
 }
 
 export const ipcHandle = <Key extends keyof EventPayloadMapping | keyof EventPayloadArgsMapping>(
-    key: Key, 
+    key: Key,
     handler: (arg: EventPayloadArgsMapping[Key]) => EventPayloadMapping[Key]
 ) => {
     ipcMain.handle(key, (event, arg) => {
-        if(!event.senderFrame) { throw new Error("No frame.")}
+        if (!event.senderFrame) { throw new Error("No frame.") }
         validateEventFrame(event.senderFrame);
         return handler(arg)
     });
 }
 
+export const ipcMainOn = <Key extends keyof EventPayloadMapping | keyof EventPayloadArgsMapping>(
+    key: Key,
+    handler: (arg: EventPayloadArgsMapping[Key]) => void
+) => {
+    ipcMain.on(key, (event, payload) => {
+        if (!event.senderFrame) { throw new Error("No frame.") }
+        validateEventFrame(event.senderFrame);
+        return handler(payload)
+    });
+}
+
 export const validateEventFrame = (frame: WebFrameMain) => {
-    if(isDev() && new URL(frame.url).host === "localhost:5321"){
+    if (isDev() && new URL(frame.url).host === "localhost:5321") {
         return;
     }
 
-    if(frame.url !== pathToFileURL(getUIPath()).toString()){
+    if (frame.url !== pathToFileURL(getUIPath()).toString()) {
         throw new Error("Malicious event")
     }
 }
@@ -38,9 +49,9 @@ export const setEnvVariables = (vars: EnvVariable[]): void => {
 }
 
 export const getEnvVariables = (): EnvVariables => {
-    return {...envVars};
+    return { ...envVars };
 }
 
 export const saveEnvVariables = (): void => {
-    writeFileSync("./data/preferences.json", JSON.stringify({...envVars}));
+    writeFileSync("./data/preferences.json", JSON.stringify({ ...envVars }));
 }

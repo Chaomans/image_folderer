@@ -30,7 +30,8 @@ type EventPayloadMapping = {
 type EventPayloadArgsMapping = {
     listImagesFromFolder: string;
     filterFolderImages: ImageList;
-    selectFolder: string[] | undefined
+    selectFolder: string[] | undefined;
+    sendFrameAction: FrameWindowAction;
 }
 
 type EnvVariables = {
