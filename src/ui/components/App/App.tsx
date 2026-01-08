@@ -43,6 +43,23 @@ function App() {
         <div className="content">
           <div className="left">
             <img src={logo} className="logo react" alt="app logo" />
+            <div className="options">
+              <p>Filtrer par:</p>
+              <div className="filters">
+                <input
+                  type="checkbox"
+                  name="filterBtnYear"
+                  id="filterBtnYear"
+                />
+                <label htmlFor="filterBtnYear">Année</label>
+                <input
+                  type="checkbox"
+                  name="filterBtnMonth"
+                  id="filterBtnMonth"
+                />
+                <label htmlFor="filterBtnMonth">Mois</label>
+              </div>
+            </div>
           </div>
           <div className="right">
             <div className="card">
