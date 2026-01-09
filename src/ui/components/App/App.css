@@ -172,3 +172,19 @@ button.dirBtn {
   max-width: 100%;
   max-height: 190px;
 }
+
+#startBtn:focus, #startBtn:active {
+  outline: none;
+}
+
+#startBtn {
+  transition: all .2;
+}
+
+#startBtn.start {
+  border-color: rgb(247, 18, 18);
+}
+
+#startBtn.over {
+  border-color: rgb(0, 158, 21);
+}

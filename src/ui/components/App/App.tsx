@@ -8,7 +8,9 @@ function App() {
   const [imgs, setImgs] = useState([""]);
   const [disabledInputs, setDisabledInputs] = useState({y: true, m: false})
   const [isChecked, setIsChecked] = useState({y: true, m: false})
+  const [isFoldering, setIsFoldering] = useState(false);
   const listImagesFromFolder = async () => {
+    setIsFoldering(false);
     const _dir = await window.electron.selectFolder();
     if (_dir) {
       console.log(_dir[0]);
@@ -101,14 +103,15 @@ function App() {
               <p>{count} images detectées</p>
               <button
                 onClick={async () => {
+                  setIsFoldering(true)
                   await window.electron.setEnvVariables([
                     {name: "FILTER_BY_YEAR", value: isChecked.y},
                     {name: "FILTER_BY_MONTH", value: isChecked.m}
                   ]);
-                  await window.electron.filterFolderImages({ dir, imgs })
-                }
-                }
-                disabled={dir && count ? false : true}
+                  await window.electron.filterFolderImages({ dir, imgs });
+                }}
+                disabled={isFoldering || (dir && count) ? false : true}
+                id="startBtn"
               >
                 Filter folder images !
               </button>

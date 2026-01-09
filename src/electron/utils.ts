@@ -1,4 +1,4 @@
-import { ipcMain, type WebFrameMain } from "electron";
+import { ipcMain, type WebFrameMain, Notification } from "electron";
 import { getUIPath } from "./pathResolver.js";
 import { pathToFileURL } from "url";
 import { writeFileSync } from "fs";
@@ -62,4 +62,8 @@ export const getEnvVariables = (): EnvVariables => {
 
 export const saveEnvVariables = (): void => {
     writeFileSync("./data/preferences.json", JSON.stringify({ ...envVars }));
+}
+
+export const showNotification = ({title, body}: NotificationArgs) => {
+    new Notification({ title, body }).show()
 }

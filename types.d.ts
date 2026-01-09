@@ -52,3 +52,8 @@ type EnvVariable = {
 }
 
 type FrameWindowAction = "CLOSE" | "MINIMIZE";
+
+type NotificationArgs = {
+    title: string;
+    body: string;
+}

@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readdirSync, renameSync } from "fs";
 import mime from "mime";
 import path, { join } from "path";
 import ExifReader from 'exifreader';
-import { getEnvVariables } from "./utils.js";
+import { getEnvVariables, showNotification } from "./utils.js";
 
 export const listImagesFromFolder = (dir: string): string[] => {
     console.log(`dir: ${dir}`);
@@ -35,7 +35,7 @@ const isImage = (fileType: string): boolean => {
 const getImageDateTimeOriginal = async (imgPath: string): Promise<ImageExifData> => {
     const tags = await ExifReader.load(imgPath);
     const date = new Date();
-    const dto = tags.DateTimeOriginal?.description ?? `${date.getFullYear()}:${date.getMonth() + 1}`;
+    const dto = tags.DateTimeOriginal?.description ?? `null:null`;
     return {
         dir: path.dirname(imgPath),
         name: path.basename(imgPath),
@@ -97,7 +97,12 @@ const moveImages = (imgs: ImageExifData[]): void => {
 
 export const filterFolderImages = async (imgs: ImageList): Promise<boolean> => {
     const imgsData = await listImagesData(imgs);
-    moveImages(imgsData)
+    const validImgsData = imgsData.filter(imgdata => imgdata.year.toString() !== "null");
+    moveImages(validImgsData);
     console.info("Folder filtered !")
+    showNotification({
+        title: "Image Folderer",
+        body: `${validImgsData.length}/${imgsData.length} images foldered succesfully !`
+    })
     return true;
 }
