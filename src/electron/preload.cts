@@ -5,7 +5,8 @@ electron.contextBridge.exposeInMainWorld("electron", {
     listImagesFromFolder: (arg) => ipcInvoke("listImagesFromFolder", arg),
     filterFolderImages: async (arg) => ipcInvoke("filterFolderImages", arg),
     selectFolder: () => ipcInvoke("selectFolder", []),
-    sendFrameAction: (payload) => ipcSend("sendFrameAction", payload)
+    sendFrameAction: (payload) => ipcSend("sendFrameAction", payload),
+    setEnvVariables: async (arg) => ipcInvoke("setEnvVariables", arg)
 } satisfies Window["electron"])
 
 const ipcInvoke = <Key extends keyof EventPayloadMapping | keyof EventPayloadArgsMapping>(key: Key, arg: EventPayloadArgsMapping[Key]): Promise<EventPayloadMapping[Key]> => {

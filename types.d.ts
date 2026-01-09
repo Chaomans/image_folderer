@@ -14,17 +14,19 @@ interface Window {
     electron: {
         subscribeDir: (callback: (dir: string) => void) => void,
         listImagesFromFolder: (arg: string) => Promise<string[]>,
-        filterFolderImages: (arg: ImageList) => Promise<void>,
+        filterFolderImages: (arg: ImageList) => Promise<boolean>,
         selectFolder: () => Promise<string[] | undefined>,
-        sendFrameAction: (payload: FrameWindowAction) => void
+        sendFrameAction: (payload: FrameWindowAction) => void,
+        setEnvVariables: (arg: EnvVariable[]) => Promise<EnvVariable[]>
     }
 }
 
 type EventPayloadMapping = {
     listImagesFromFolder: string[];
-    filterFolderImages: Promise<void>;
+    filterFolderImages: Promise<boolean>;
     selectFolder: string[] | undefined;
     sendFrameAction: FrameWindowAction;
+    setEnvVariables: Promise<EnvVariable[]>;
 }
 
 type EventPayloadArgsMapping = {
@@ -32,6 +34,7 @@ type EventPayloadArgsMapping = {
     filterFolderImages: ImageList;
     selectFolder: string[] | undefined;
     sendFrameAction: FrameWindowAction;
+    setEnvVariables: EnvVariable[];
 }
 
 type EnvVariables = {

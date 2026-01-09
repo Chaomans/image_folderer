@@ -1,5 +1,5 @@
 import { app, BrowserWindow, dialog } from "electron";
-import { ipcHandle, ipcMainOn, isDev } from "./utils.js";
+import { ipcHandle, ipcMainOn, isDev, setEnvVariables } from "./utils.js";
 import { getPreloadPath, getUIPath } from "./pathResolver.js";
 import { filterFolderImages, listImagesFromFolder } from "./images.js";
 
@@ -23,6 +23,7 @@ app.on("ready", () => {
     }
     ipcHandle("listImagesFromFolder", listImagesFromFolder);
     ipcHandle("filterFolderImages", filterFolderImages);
+    ipcHandle("setEnvVariables", setEnvVariables);
     ipcHandle("selectFolder", () => {
         return dialog.showOpenDialogSync({
             properties: ['openDirectory']

@@ -95,8 +95,9 @@ const moveImages = (imgs: ImageExifData[]): void => {
     })
 }
 
-export const filterFolderImages = async (imgs: ImageList): Promise<void> => {
+export const filterFolderImages = async (imgs: ImageList): Promise<boolean> => {
     const imgsData = await listImagesData(imgs);
     moveImages(imgsData)
     console.info("Folder filtered !")
+    return true;
 }

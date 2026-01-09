@@ -2,7 +2,7 @@ import { ipcMain, type WebFrameMain } from "electron";
 import { getUIPath } from "./pathResolver.js";
 import { pathToFileURL } from "url";
 import { writeFileSync } from "fs";
-import envVars from "./data/preferences.json" with { type: "json" };
+// import envVars from "./data/preferences.json" with { type: "json" };
 
 
 export function isDev(): boolean {
@@ -41,11 +41,19 @@ export const validateEventFrame = (frame: WebFrameMain) => {
     }
 }
 
+const envVars: EnvVariables = {
+    "FRENCH": true,
+    "FILTER_BY_YEAR": true,
+    "FILTER_BY_MONTH": true,
+    "MONTH_SHORT": false
+}
 
-export const setEnvVariables = (vars: EnvVariable[]): void => {
+export const setEnvVariables = async (vars: EnvVariable[]): Promise<EnvVariable[]> => {
     vars.forEach(v => {
         envVars[v.name] = v.value;
     })
+    console.log(envVars);
+    return vars
 }
 
 export const getEnvVariables = (): EnvVariables => {
