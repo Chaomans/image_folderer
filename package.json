@@ -1,9 +1,11 @@
 {
   "name": "image_folderer",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "main": "dist-electron/main.js",
+  "author": {"name": "Chaomans", "url": "https://github.com/Chaomans"},
+  "description": "Folder your photos by year and by month automatically !",
   "scripts": {
     "dev": "npm-run-all --parallel dev:react dev:electron",
     "dev:react": "vite",

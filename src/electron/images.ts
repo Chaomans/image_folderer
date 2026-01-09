@@ -34,7 +34,6 @@ const isImage = (fileType: string): boolean => {
 
 const getImageDateTimeOriginal = async (imgPath: string): Promise<ImageExifData> => {
     const tags = await ExifReader.load(imgPath);
-    const date = new Date();
     const dto = tags.DateTimeOriginal?.description ?? `null:null`;
     return {
         dir: path.dirname(imgPath),
