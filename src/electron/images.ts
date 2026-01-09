@@ -34,7 +34,7 @@ const isImage = (fileType: string): boolean => {
 
 const getImageDateTimeOriginal = async (imgPath: string): Promise<ImageExifData> => {
     const tags = await ExifReader.load(imgPath);
-    const dto = tags.DateTimeOriginal?.description ?? `null:null`;
+    const dto = tags.DateTimeOriginal?.description ?? `0:0`;
     return {
         dir: path.dirname(imgPath),
         name: path.basename(imgPath),
@@ -96,7 +96,7 @@ const moveImages = (imgs: ImageExifData[]): void => {
 
 export const filterFolderImages = async (imgs: ImageList): Promise<boolean> => {
     const imgsData = await listImagesData(imgs);
-    const validImgsData = imgsData.filter(imgdata => imgdata.year.toString() !== "null");
+    const validImgsData = imgsData.filter(imgdata => imgdata.year.toString() !== "0");
     moveImages(validImgsData);
     console.info("Folder filtered !")
     showNotification({
